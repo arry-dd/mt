@@ -12,37 +12,14 @@
         :span="15"
         class="center">
         <div class="wrapper">
-          <el-input placeholder="搜索商家或地点"/>
+          <el-input v-model="inputData" @blur="onblur" @focus="onfocus" placeholder="搜索商家或地点"/>
           <button class="el-button el-button--primary"><i class="el-icon-search"/></button>
-          <dl
-            class="hotPlace">
+          <dl class="hotPlace" v-if="showHotPlace">
             <dt>热门搜索</dt>
-            <dd>
-              火锅
-            </dd>
-            <dd>
-              火锅
-            </dd>
-            <dd>
-              火锅
-            </dd>
-            <dd>
-              火锅
-            </dd>
+            <dd v-for="(item,index) in hotPlace" :key="index">{{item}}</dd>
           </dl>
-          <dl class="searchList">
-            <dd>
-              火锅
-            </dd>
-            <dd>
-              火锅
-            </dd>
-            <dd>
-              火锅
-            </dd>
-            <dd>
-              火锅
-            </dd>
+          <dl class="searchList" v-if="showSearchList">
+            <dd v-for="(item,index) in searchList" :key="index">{{item}}</dd>
           </dl>
         </div>
         <p class="suggest">
@@ -102,7 +79,37 @@
 
 <script>
 
-  export default {}
+  export default {
+    data() {
+      return {
+        //热门搜索与推荐搜索列表
+        searchList: ['火锅','火锅','火锅'],
+        hotPlace: ['故宫','故宫','故宫','故宫'],
+        //输入框中的数据
+        inputData: '',
+        //输入框是聚焦还是失去焦点
+        focus: false
+      }
+    },
+    methods: {
+      onblur() {
+        setTimeout(()=>{
+          this.focus = false;
+        },200);
+      },
+      onfocus() {
+        this.focus = true;
+      }
+    },
+    computed: {
+      showHotPlace() {
+        return this.focus&&!this.inputData;
+      },
+      showSearchList() {
+        return this.focus&&this.inputData;
+      }
+    }
+  }
 </script>
 
 <style lang="scss">
